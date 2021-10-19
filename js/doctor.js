@@ -8,27 +8,30 @@ function hidden_div_doctor() {
     limpiarCamposdoctor();
 }
 function getdoctors() {
-    var url = urldoctors;
+    var url = urlDoctor + "/all";
+    console.log("data->");
+    console.log(url);
     let ress = fetch(url, {
-        method: 'GET'
+        method: 'GET',
     }).then(response => response.json())
         .then(data => {
-            listadoctors = data.items;
+            listadoctors = data;
+
             let datatexto = '<table class="table table-striped"><thead>';
-            datatexto+='<tr><th scope="col">#</th>';
-            datatexto+='<th scope="col">Nombre</th>';
-            datatexto+='<th scope="col">Especialidad</th>';
-            datatexto+='<th scope="col">Año</th>';
-            datatexto+='<th scope="col">Dep id</th>';
-            datatexto+='<th scope="col"></th><th scope="col"></th></tr></thead><tbody>';
-            if (data.items.length > 0) {
-                data.items.forEach(doctor => {
+            datatexto += '<tr><th scope="col">#</th>';
+            datatexto += '<th scope="col">Nombre</th>';
+            datatexto += '<th scope="col">Especialidad</th>';
+            datatexto += '<th scope="col">Año</th>';
+            datatexto += '<th scope="col">Dep id</th>';
+            datatexto += '<th scope="col"></th><th scope="col"></th></tr></thead><tbody>';
+            if (data.length > 0) {
+                data.forEach(doctor => {
                     datatexto += "<tr>";
                     datatexto += '<th scope="row">' + doctor.id + '</th>';
                     datatexto += '<td>' + doctor.name + '</td>';
-                    datatexto += '<td>' + doctor.specialty + '</td>';
-                    datatexto += '<td>' + doctor.graduate_year + '</td>';
-                    datatexto += '<td>' + doctor.department_id + '</td>';
+                    datatexto += '<td>' + doctor.specialty.name + '</td>';
+                    datatexto += '<td>' + doctor.year + '</td>';
+                    datatexto += '<td>' + doctor.department + '</td>';
                     datatexto += '<td><button class="btn btn-primary" onclick="editdoctor(' + doctor.id + ')"  >Editar</button></td>';
                     datatexto += '<td><button class="btn btn-danger" onclick="deletedoctor(' + doctor.id + ')" > X</button></td>';
                     datatexto += '</tr>';
@@ -76,14 +79,15 @@ function limpiarCamposdoctor() {
     currentdoctor = 0;
 }
 function guardarDatosdoctor() {
-    var url = urldoctors;
+    var url = urlDoctor+"/save";
     let nombre = document.getElementById('txtNombredoctor').value;
     let especialidad = document.getElementById('txtEspecialidaddoctor').value;
     let year = document.getElementById('txtYeardoctor').value;
     let dep = document.getElementById('txtDepdoctor').value;
     if (currentdoctor == 0) {
         //nuevo
-        var data = { id: 0, name: nombre, specialty: especialidad, graduate_year: year,department_id:dep };
+        //{"department":"Pediatra","year":2005,"specialty":{"id":1},"name":"Mario Delgadillo","description":"DrMuelitas"}
+        var data = {  name: nombre, specialty: {id:1}, year: year, department: dep ,description:"algo test"};
         fetch(url, {
             method: 'POST',
             body: JSON.stringify(data),
@@ -98,7 +102,7 @@ function guardarDatosdoctor() {
     } else {
         //editar
         let id = currentdoctor;
-        var data = { id: id, name: nombre, specialty: especialidad, graduate_year: year,department_id:dep };
+        var data = { id: id, name: nombre, specialty: especialidad, graduate_year: year, department_id: dep };
         fetch(url, {
             method: 'PUT',
             body: JSON.stringify(data),

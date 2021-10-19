@@ -10,11 +10,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <script src="index.js"></script>
-    <script src="utilidades.js"></script>
-    <script src="cliente.js"></script>
-    <script src="doctor.js"></script>
-    <script src="mensaje.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/utilidades.js"></script>
+    <script src="js/cliente.js"></script>
+    <script src="js/doctor.js"></script>
+    <script src="js/mensaje.js"></script>
     <title>Reto 2</title>
 </head>
 
@@ -48,14 +48,25 @@
                     <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab"
                         aria-controls="pills-contact" aria-selected="false">Mensajes</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-especialidad-tab" data-toggle="pill" href="#pills-especialidad" role="tab"
+                        aria-controls="pills-especialidad" aria-selected="false">Especialidad</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-reserva-tab" data-toggle="pill" href="#pills-reservas" role="tab"
+                        aria-controls="pills-reservas" aria-selected="false">Reservas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-adminuser-tab" data-toggle="pill" href="#pills-adminuser" role="tab"
+                        aria-controls="pills-adminuser" aria-selected="false">admin User</a>
+                </li>
             </ul>
 
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
-                        aria-labelledby="pills-home-tab">
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                         <div class="row">
                             <div class="col-md-8">
                                 <input type="button" value="Nuevo" class="btn btn-primary pull-right"
@@ -174,11 +185,17 @@
                             </div>
                         </div>
                     </div>
+                    <div class="tab-pane fade" id="pills-especialidad" role="tabpanel" aria-labelledby="pills-especialidad-tab">
+                        <h3>Especialidad</h3>
+                    </div>
+                    <div class="tab-pane fade" id="pills-reservas" role="tabpanel" aria-labelledby="pills-reserva-tab">
+                        <h3>Reservas</h3>
+                    </div>
+                    <div class="tab-pane fade" id="pills-adminuser" role="tabpanel" aria-labelledby="pills-adminuser-tab">
+                        <h3>AdminUser</h3>
+                    </div>
                 </div>
             </div>
-
-
-
         </div>
     </div>
 
