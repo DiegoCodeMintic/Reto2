@@ -8,10 +8,13 @@ let currentdoctor=0;
 let listaMensajes=[];
 let currentMensaje=0;
 
+let listaEspecialidades=[];
+let currentEspecialidad =0;
+
+let listaReservaciones=[];
+let currentReservacion=0;
 //FUNCIONES DE PAGINA
 function loadPage() {
-    getClientes();
-    getdoctors();
-    getMensajes();
+    getEspecialidad();
 }
 

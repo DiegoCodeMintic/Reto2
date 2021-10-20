@@ -9,13 +9,13 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
-    <script src="js/index.js"></script>
-    <script src="js/utilidades.js"></script>
-    <script src="js/cliente.js"></script>
-    <script src="js/doctor.js"></script>
-    <script src="js/mensaje.js"></script>
-    <title>Reto 2</title>
+
+
+    <title>Diego Bernal Reto 3</title>
 </head>
 
 <body onload="loadPage()">
@@ -25,7 +25,7 @@
                 <h3>MinTic 2021</h3>
             </div>
             <div class="col-md-3">
-                <h4>Reto 2</h4>
+                <h4>Reto 3</h4>
             </div>
             <div class="col-md-3">
                 <h5>Diego Roberto Bernal Olaya</h5>
@@ -37,24 +37,26 @@
         <div class="row">
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
-                        aria-controls="pills-home" aria-selected="true">Cliente</a>
+                    <a class="nav-link active" id="pills-especialidad-tab" data-toggle="pill" href="#pills-especialidad"
+                        role="tab" aria-controls="pills-especialidad" aria-selected="false">Especialidad</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab"
-                        aria-controls="pills-profile" aria-selected="false">Doctor</a>
+                        aria-controls="pills-profile" aria-selected="false" onclick="getdoctors()">Doctor</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
+                        aria-controls="pills-home" aria-selected="true" onclick="getClientes()">Cliente</a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab"
-                        aria-controls="pills-contact" aria-selected="false">Mensajes</a>
+                        aria-controls="pills-contact" aria-selected="false" onclick="getMensajes()">Mensajes</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-especialidad-tab" data-toggle="pill" href="#pills-especialidad" role="tab"
-                        aria-controls="pills-especialidad" aria-selected="false">Especialidad</a>
-                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" id="pills-reserva-tab" data-toggle="pill" href="#pills-reservas" role="tab"
-                        aria-controls="pills-reservas" aria-selected="false">Reservas</a>
+                        aria-controls="pills-reservas" aria-selected="false" onclick="getReservacion()">Reservas</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="pills-adminuser-tab" data-toggle="pill" href="#pills-adminuser" role="tab"
@@ -66,15 +68,60 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <div class="tab-pane fade show active" id="pills-especialidad" role="tabpanel"
+                        aria-labelledby="pills-especialidad-tab">
+
+                        <div class="row">
+                            <div class="col-md-7">
+                                <h3>Especialidades</h3>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="button" value="Nuevo" class="btn btn-success pull-right"
+                                    onclick="show_div_especialidad()">
+                            </div>
+                            <div class="col-md-3">
+                            </div>
+                        </div>
+                        <br>
                         <div class="row">
                             <div class="col-md-8">
-                                <input type="button" value="Nuevo" class="btn btn-primary pull-right"
+                                <div id="div_data_especialidad"></div>
+                            </div>
+                            <div class="col-md-3" id="div_form_especialidad" style="visibility: hidden;">
+                                <div>
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Id</label>
+                                            <input type="text" class="form-control" id="txtIdEspecialidad" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Nombre</label>
+                                            <input type="text" class="form-control" id="txtEspecialidadTexto">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Descripción</label>
+                                            <input type="text" class="form-control" id="txtEspecialidadDescripcion">
+                                        </div>
+                                        <input type="button" value="Guardar" class="btn btn-primary"
+                                            onclick="guardarDatosEspecialidad()" style="width: 100%;">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <h3>Clientes</h3>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="button" value="Nuevo" class="btn btn-success pull-right"
                                     onclick="show_div_cliente()">
                             </div>
                             <div class="col-md-3">
                             </div>
                         </div>
+
                         <br>
                         <div class="row">
                             <div class="col-md-8">
@@ -100,6 +147,10 @@
                                             <label for="exampleInputEmail1">Edad</label>
                                             <input type="number" class="form-control" id="txtEdadCliente">
                                         </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Password</label>
+                                            <input type="password" class="form-control" id="txtPassCliente">
+                                        </div>
 
                                         <input type="button" value="Guardar" class="btn btn-primary"
                                             onclick="guardarDatos()" style="width: 100%;">
@@ -110,13 +161,17 @@
                     </div>
                     <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                         <div class="row">
-                            <div class="col-md-8">
-                                <input type="button" value="Nuevo" class="btn btn-primary pull-right"
+                            <div class="col-md-7">
+                                <h3>Doctores</h3>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="button" value="Nuevo" class="btn btn-success pull-right"
                                     onclick="show_div_doctor()">
                             </div>
                             <div class="col-md-3">
                             </div>
                         </div>
+
                         <br>
                         <div class="row">
                             <div class="col-md-8">
@@ -133,9 +188,7 @@
                                             <label for="exampleInputEmail1">Nombre</label>
                                             <input type="text" class="form-control" id="txtNombredoctor">
                                         </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Especialidad</label>
-                                            <input type="text" class="form-control" id="txtEspecialidaddoctor">
+                                        <div id="div_doctor_especialidad">
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Año de grado</label>
@@ -155,8 +208,11 @@
                     </div>
                     <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
                         <div class="row">
-                            <div class="col-md-8">
-                                <input type="button" value="Nuevo" class="btn btn-primary pull-right"
+                            <div class="col-md-7">
+                                <h3>Mensajes</h3>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="button" value="Nuevo" class="btn btn-success pull-right"
                                     onclick="show_div_mensaje()">
                             </div>
                             <div class="col-md-3">
@@ -174,8 +230,12 @@
                                             <label for="exampleInputEmail1">Id</label>
                                             <input type="text" class="form-control" id="txtIdMensaje" disabled>
                                         </div>
+                                        <div id="div_mensaje_doctor">
+                                        </div>
+                                        <div id="div_mensaje_cliente">
+                                        </div>
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Nombre</label>
+                                            <label for="exampleInputEmail1">Mensaje</label>
                                             <input type="text" class="form-control" id="txtMensajeTexto">
                                         </div>
                                         <input type="button" value="Guardar" class="btn btn-primary"
@@ -185,13 +245,65 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="pills-especialidad" role="tabpanel" aria-labelledby="pills-especialidad-tab">
-                        <h3>Especialidad</h3>
-                    </div>
+
                     <div class="tab-pane fade" id="pills-reservas" role="tabpanel" aria-labelledby="pills-reserva-tab">
-                        <h3>Reservas</h3>
+                        <div class="row">
+                            <div class="col-md-7">
+                                <h3>Reservas</h3>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="button" value="Nuevo" class="btn btn-success pull-right"
+                                    onclick="show_div_reservacion()">
+                            </div>
+                            <div class="col-md-3">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div id="div_data_reservacion"></div>
+                            </div>
+                            <div class="col-md-3" id="div_form_reservacion" style="visibility: hidden;">
+                                <div>
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Id</label>
+                                            <input type="text" class="form-control" id="txtIdReservacion" disabled>
+                                        </div>
+                                        <div id="div_reservacion_doctor">
+                                        </div>
+                                        <div id="div_reservacion_cliente">
+                                        </div>
+                                        <div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Fecha Inicial</label>
+                                            <input id="datepicker_inicio" autocomplete="off" />
+                                            <script>
+                                                $('#datepicker_inicio').datepicker({
+                                                    uiLibrary: 'bootstrap4',format: 'yyyy-mm-dd'
+                                                });
+                                            </script>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Fecha Final</label>
+                                            <input id="datepicker_fin" autocomplete="off" />
+                                            <script>
+                                                $('#datepicker_fin').datepicker({
+                                                    uiLibrary: 'bootstrap4',format: 'yyyy-mm-dd'
+                                                });
+                                            </script>
+                                        </div>
+
+                                        <input type="button" value="Guardar" class="btn btn-primary"
+                                            onclick="guardarDatosReservacion()" style="width: 100%;">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="tab-pane fade" id="pills-adminuser" role="tabpanel" aria-labelledby="pills-adminuser-tab">
+                    <div class="tab-pane fade" id="pills-adminuser" role="tabpanel"
+                        aria-labelledby="pills-adminuser-tab">
                         <h3>AdminUser</h3>
                     </div>
                 </div>
@@ -200,7 +312,13 @@
     </div>
 
 
-
+    <script src="js/index.js"></script>
+    <script src="js/especialidad.js"></script>
+    <script src="js/utilidades.js"></script>
+    <script src="js/cliente.js"></script>
+    <script src="js/doctor.js"></script>
+    <script src="js/mensaje.js"></script>
+    <script src="js/reservacion.js"></script>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -213,6 +331,12 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+
+    <!-- controles fecha -->
+
+
+
+
 </body>
 
 </html>
