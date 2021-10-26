@@ -14,11 +14,11 @@ function getClientes() {
     }).then(response => response.json())
         .then(data => {
             listaClientes = data;
-            let datatexto = '<table class="table table-striped"><thead><tr><th scope="col">#</th><th scope="col">Nombre</th><th scope="col">Email</th><th scope="col">Edad</th><th scope="col"></th><th scope="col"></th></tr></thead><tbody>';
+            let datatexto = '<table class="table table-striped"><thead><tr><th scope="col">Nombre</th><th scope="col">Email</th><th scope="col">Edad</th><th scope="col"></th><th scope="col"></th></tr></thead><tbody>';
             if (data.length > 0) {
                 data.forEach(cliente => {
                     datatexto += "<tr>";
-                    datatexto += '<th scope="row">' + cliente.idClient + '</th>';
+                    //datatexto += '<th scope="row">' + cliente.idClient + '</th>';
                     datatexto += '<td>' + cliente.name + '</td>';
                     datatexto += '<td>' + cliente.email + '</td>';
                     datatexto += '<td>' + cliente.age + '</td>';

@@ -23,11 +23,11 @@ function getEspecialidad() {
     }).then(response => response.json())
         .then(data => {
             listaEspecialidades = data;
-            let datatexto = '<table class="table table-striped"><thead><tr><th scope="col">#</th><th scope="col">especialidad</th><th scope="col"></th><th scope="col"></th></tr></thead><tbody>';
+            let datatexto = '<table class="table table-striped"><thead><tr><th scope="col">especialidad</th><th scope="col"></th><th scope="col"></th></tr></thead><tbody>';
             if (data.length > 0) {
                 data.forEach(especialidad => {
                     datatexto += "<tr>";
-                    datatexto += '<th scope="row">' + especialidad.id + '</th>';
+                    //datatexto += '<th scope="row">' + especialidad.id + '</th>';
                     datatexto += '<td>' + especialidad.name + '</td>';
 
                     datatexto += '<td><button class="btn btn-primary" onclick="editEspecialidad(' + especialidad.id + ')"  >Editar</button></td>';
