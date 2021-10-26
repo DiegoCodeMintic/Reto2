@@ -1,0 +1,12 @@
+OBJETIVO
+
+* en plataforma Oracle crear tabla CLIENT - MESSAGE
+* implementar CRUD REST
+* crear y publicar frontend
+
+
+--URL  de prueba
+--https://g8b329f59e9c137-db202109230709.adb.sa-saopaulo-1.oraclecloudapps.com
+
+--Codigo implementado
+--https://github.com/DiegoCodeMintic/Reto2.git

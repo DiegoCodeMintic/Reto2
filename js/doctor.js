@@ -1,12 +1,5 @@
 //FUNCIONES DE DOCTOR
-function show_div_doctor() {
-    document.getElementById("div_form_doctor").style.visibility = "visible";
-    limpiarCamposdoctor();
-}
-function hidden_div_doctor() {
-    document.getElementById("div_form_doctor").style.visibility = "hidden";
-    limpiarCamposdoctor();
-}
+
 function getdoctors() {
     var url = urlDoctor + "/all";
     console.log("data->");
@@ -115,4 +108,13 @@ function guardarDatosdoctor() {
             hidden_div_doctor();
         });
     }
+}
+
+function show_div_doctor() {
+    document.getElementById("div_form_doctor").style.visibility = "visible";
+    limpiarCamposdoctor();
+}
+function hidden_div_doctor() {
+    document.getElementById("div_form_doctor").style.visibility = "hidden";
+    limpiarCamposdoctor();
 }
