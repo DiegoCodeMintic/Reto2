@@ -1,6 +1,7 @@
 //FUNCIONES DE CLIENTE
 function show_div_cliente() {
     document.getElementById("div_form_cliente").style.visibility = "visible";
+    document.getElementById("txtEmailCliente").disabled = false;
     limpiarCamposCliente();
 }
 function hidden_div_cliente() {
@@ -8,7 +9,12 @@ function hidden_div_cliente() {
     limpiarCamposCliente();
 }
 function getClientes() {
-    var url = urlCliente+"/all";
+
+    var el;
+    el = document.getElementById('txtNombreCliente');
+    el.addEventListener('keyup', countCharactersCliente, false);
+
+    var url = urlCliente + "/all";
     let ress = fetch(url, {
         method: 'GET',
     }).then(response => response.json())
@@ -32,21 +38,34 @@ function getClientes() {
         });
 }
 function deleteCliente(id) {
-    // var opcion = confirm("Seguro que desea eliminar?");
-    // if (opcion == true) {
-    //     var data = { id: id };
-    //     var url = urlClientes;
-    //     fetch(url, {
-    //         method: 'DELETE',
-    //         body: JSON.stringify(data),
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         }
-    //     });
-    //     getClientes();
-    //     hidden_div_cliente();
-    // }
-    alert("función no disponible aún en este reto 3 ");
+    var opcion = confirm("Seguro que desea eliminar?");
+    if (opcion == true) {
+        var delInfo = true;
+        listaClientes.forEach(element => {
+            if (element.idClient == id) {
+                if (element.messages.length > 0 || element.reservations.length > 0) {
+                    delInfo = false;
+
+                }
+            }
+        });
+        if (delInfo) {
+            var url = urlCliente + '/' + id;
+            fetch(url, {
+                method: 'DELETE',
+                //body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(() => {
+                getClientes();
+                hidden_div_cliente();
+            });
+        } else {
+            alert("NO se puede eliminar este cliente porque tiene MENSAJES o RESERVAS\nElimine estos antes de borrar este registro");
+        }
+    }
+
 }
 function editCliente(id) {
     listaClientes.forEach(cliente => {
@@ -57,6 +76,9 @@ function editCliente(id) {
             document.getElementById('txtNombreCliente').value = cliente.name;
             document.getElementById('txtEmailCliente').value = cliente.email;
             document.getElementById('txtEdadCliente').value = cliente.age;
+            countRemaining = document.getElementById('lblCountLettersCliente');
+            countRemaining.textContent = cliente.name.length + "/250";
+            document.getElementById("txtEmailCliente").disabled = true;
         }
     });
 }
@@ -67,9 +89,12 @@ function limpiarCamposCliente() {
     document.getElementById('txtEdadCliente').value = "";
     document.getElementById('txtPassCliente').value = "";
     currentCliente = 0;
+
+    countRemaining = document.getElementById('lblCountLettersCliente');
+    countRemaining.textContent = "0/250";
 }
 function guardarDatos() {
-    var url = urlCliente+"/save";
+    var url = urlCliente + "/save";
     let nombre = document.getElementById('txtNombreCliente').value;
     let email = document.getElementById('txtEmailCliente').value;
     let edad = document.getElementById('txtEdadCliente').value;
@@ -77,7 +102,7 @@ function guardarDatos() {
     if (currentCliente == 0) {
         //nuevo
         //{"name":"Agustin Parra","email":"agustin@gmail.com","password":"agustin123","age":18}
-        var data = { id: 0, name: nombre, email: email, age: edad,password:pass };
+        var data = { id: 0, name: nombre, email: email, age: edad, password: pass };
         fetch(url, {
             method: 'POST',
             body: JSON.stringify(data),
@@ -91,19 +116,30 @@ function guardarDatos() {
         });
     } else {
         //editar
-        alert("función no disponible aún en este reto 3 ");
-        // let id = currentCliente;
-        // var data = { id: id, name: nombre, email: email, age: edad };
-        // fetch(url, {
-        //     method: 'PUT',
-        //     body: JSON.stringify(data),
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     }
-        // }).then(() => {
-        //     alert('Cliente Editado');
-        //     getClientes();
-        //     hidden_div_cliente();
-        // });
+
+        url = urlCliente + "/update";
+        let id = currentCliente;
+        var data = { idClient: id, name: nombre, email: email, password: pass, age: edad };
+        //{"idClient":1,"name":"Adeodato Sanchez","email":"agustin@gmail.com","password":"adeodato123","age":15}
+        fetch(url, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(() => {
+            alert('Cliente Editado');
+            getClientes();
+            hidden_div_cliente();
+        });
     }
+}
+
+//nuevo en reto4
+function countCharactersCliente(e) {
+    var textEntered, countRemaining, counter;
+    textEntered = document.getElementById('txtNombreCliente').value;
+    counter = textEntered.length;
+    countRemaining = document.getElementById('lblCountLettersCliente');
+    countRemaining.textContent = counter + "/250";
 }
