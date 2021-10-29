@@ -7,4 +7,4 @@ var urlDoctor       = urlBase + '/api/Doctor';
 var urlCliente      = urlBase + '/api/Client';
 var urlMessage      = urlBase + '/api/Message';
 var urlReservation  = urlBase + '/api/Reservation';
-var ulrAdminUser    = urlBase + '/api/AdminUser';
+var urlAdmin    = urlBase + '/api/Admin';

@@ -21,11 +21,11 @@ function getReservacion() {
     }).then(response => response.json())
         .then(data => {
             listaReservaciones = data;
-            let datatexto = '<table class="table table-striped"><thead><tr><th scope="col">#</th><th scope="col">Inicio</th><th scope="col">Finaliza</th><th scope="col">Doctor</th><th scope="col">Cliente</th><th scope="col"></th><th scope="col"></th></tr></thead><tbody>';
+            let datatexto = '<table class="table table-striped"><thead><tr><th scope="col">Inicio</th><th scope="col">Finaliza</th><th scope="col">Doctor</th><th scope="col">Cliente</th><th scope="col"></th><th scope="col"></th></tr></thead><tbody>';
             if (data.length > 0) {
                 data.forEach(reservacion => {
                     datatexto += "<tr>";
-                    datatexto += '<td >' + reservacion.idReservation + '</td>';
+                    //datatexto += '<td >' + reservacion.idReservation + '</td>';
                     datatexto += '<td style="font-size: 10px;">' + reservacion.startDate + '</td>';
                     datatexto += '<td style="font-size: 10px;" >' + reservacion.devolutionDate + '</td>';
                     datatexto += '<td >' + reservacion.doctor.name + '</td>';

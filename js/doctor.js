@@ -17,7 +17,7 @@ function getdoctors() {
             listadoctors = data;
 
             let datatexto = '<table class="table table-striped"><thead>';
-            datatexto += '<tr><th scope="col">#</th>';
+            datatexto += '<tr>';
             datatexto += '<th scope="col">Nombre</th>';
             datatexto += '<th scope="col">Especialidad</th>';
             datatexto += '<th scope="col">Año</th>';
@@ -26,7 +26,7 @@ function getdoctors() {
             if (data.length > 0) {
                 data.forEach(doctor => {
                     datatexto += "<tr>";
-                    datatexto += '<th scope="row">' + doctor.id + '</th>';
+                    //datatexto += '<th scope="row">' + doctor.id + '</th>';
                     datatexto += '<td>' + doctor.name + '</td>';
                     datatexto += '<td>' + doctor.specialty.name + '</td>';
                     datatexto += '<td>' + doctor.year + '</td>';

@@ -13,6 +13,9 @@ let currentEspecialidad =0;
 
 let listaReservaciones=[];
 let currentReservacion=0;
+
+let listaAdmin=[];
+let currentAdmin=0;
 //FUNCIONES DE PAGINA
 function loadPage() {
     getEspecialidad();

@@ -21,11 +21,11 @@ function getMensajes() {
     }).then(response => response.json())
         .then(data => {
             listaMensajes = data;
-            let datatexto = '<table class="table table-striped"><thead><tr><th scope="col">#</th><th scope="col">Doctor</th><th scope="col">Cliente</th><th scope="col">Mensaje</th><th scope="col"></th><th scope="col"></th></tr></thead><tbody>';
+            let datatexto = '<table class="table table-striped"><thead><tr><th scope="col">Doctor</th><th scope="col">Cliente</th><th scope="col">Mensaje</th><th scope="col"></th><th scope="col"></th></tr></thead><tbody>';
             if (data.length > 0) {
                 data.forEach(mensaje => {
                     datatexto += "<tr>";
-                    datatexto += '<td >' + mensaje.idMessage + '</td>';
+                    //datatexto += '<td >' + mensaje.idMessage + '</td>';
                     datatexto += '<td >' + mensaje.doctor.name + '</td>';
                     datatexto += '<td >' + mensaje.client.name + '</td>';
                     datatexto += '<td>' + mensaje.messageText + '</td>';
