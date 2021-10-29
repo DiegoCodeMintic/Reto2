@@ -116,6 +116,8 @@ function guardarDatos() {
         });
     } else {
         //editar
+
+        
         url = urlCliente + "/update";
         let id = currentCliente;
         var data = { idClient: id, name: nombre, email: email, password: pass, age: edad };
