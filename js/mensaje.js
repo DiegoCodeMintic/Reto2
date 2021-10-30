@@ -1,5 +1,8 @@
 function show_div_mensaje() {
     document.getElementById("div_form_mensaje").style.visibility = "visible";
+    document.getElementById("select_doctor").disabled = false;
+    document.getElementById("select_client").disabled = false;
+
     limpiarCamposMensaje();
 }
 function hidden_div_mensaje() {
@@ -13,8 +16,16 @@ function limpiarCamposMensaje() {
     document.getElementById('select_doctor').value = 0;
     document.getElementById('select_client').value = 0;
     currentMensaje = 0;
+
+    countRemaining = document.getElementById('lblCountLettersMensaje');
+    countRemaining.textContent = "0/250";
 }
 function getMensajes() {
+    var el;
+    el = document.getElementById('txtMensajeTexto');
+    el.addEventListener('keyup', countCharactersMensaje, false);
+
+
     var url = urlMessage + "/all";
     let ress = fetch(url, {
         method: 'GET',
@@ -77,21 +88,22 @@ function getClient_() {
 }
 
 function deleteMensaje(id) {
-    // var opcion = confirm("Seguro que desea eliminar?");
-    // if (opcion == true) {
-    //     var data = { id: id };
-    //     var url = urlMensajes;
-    //     fetch(url, {
-    //         method: 'DELETE',
-    //         body: JSON.stringify(data),
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         }
-    //     });
-    //     getMensajes();
-    //     hidden_div_mensaje();
-    // }
-    alert("función no disponible aún en este reto 3 ");
+    var opcion = confirm("Seguro que desea eliminar?");
+    if (opcion == true) {
+        var url = urlMessage + "/" + id;
+        fetch(url, {
+            method: 'DELETE',
+            //body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(() => {
+            getMensajes();
+            hidden_div_mensaje();
+        });
+
+    }
+
 }
 function editMensaje(id) {
     listaMensajes.forEach(mensaje => {
@@ -102,22 +114,25 @@ function editMensaje(id) {
             document.getElementById('txtMensajeTexto').value = mensaje.messageText;
             document.getElementById('select_doctor').value = mensaje.doctor.id;
             document.getElementById('select_client').value = mensaje.client.idClient;
+            countRemaining = document.getElementById('lblCountLettersMensaje');
+            countRemaining.textContent = mensaje.messageText.length + "/250";
+            document.getElementById("select_doctor").disabled = true;
+            document.getElementById("select_client").disabled = true;
         }
     });
 }
 
 function guardarDatosMensaje() {
-    var url = urlMessage+"/save";
+    var url = urlMessage + "/save";
     let mensaje = document.getElementById('txtMensajeTexto').value;
     var seleccionDoctor = document.getElementById("select_doctor").value;
     var seleccionClient = document.getElementById("select_client").value;
 
-    if(seleccionClient!=0 &&seleccionDoctor!=0)
-    {
+    if (seleccionClient != 0 && seleccionDoctor != 0) {
         if (currentMensaje == 0) {
             //nuevo
             //	{"messageText":"Me gusta.","client":{"idClient":1},"doctor":{"id":1}}
-            var data = { id: 0, messageText: mensaje,client:{idClient:seleccionClient},doctor:{id:seleccionDoctor} };
+            var data = {  messageText: mensaje, client: { idClient: seleccionClient }, doctor: { id: seleccionDoctor } };
             fetch(url, {
                 method: 'POST',
                 body: JSON.stringify(data),
@@ -131,24 +146,35 @@ function guardarDatosMensaje() {
             });
         } else {
             //editar
-            alert("función no disponible aún en este reto 3 ");
-            // let id = currentMensaje;
-            // var data = { id: id, messagetext: mensaje };
-            // fetch(url, {
-            //     method: 'PUT',
-            //     body: JSON.stringify(data),
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     }
-            // }).then(() => {
-            //     alert('Mensaje Editado');
-            //     getMensajes();
-            //     hidden_div_mensaje();
-            // });
+            url = urlMessage + "/update";
+            let id = currentMensaje;
+            //{"idMessage": 2,"messageText": "pepepepe","doctor":{  "id": 1},"client":{  "idClient": 1}}
+            var data = { idMessage: id,  messageText: mensaje, client: { idClient: seleccionClient }, doctor: { id: seleccionDoctor } };
+            fetch(url, {
+                method: 'PUT',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(() => {
+                alert('Mensaje Editado');
+                getMensajes();
+                hidden_div_mensaje();
+            });
         }
-    }else{
+    } else {
         alert('falta campo Cliente o campo Doctor  ');
     }
 
-    
+
+}
+
+//nuevo en Reto 4
+
+function countCharactersMensaje(e) {
+    var textEntered, countRemaining, counter;
+    textEntered = document.getElementById('txtMensajeTexto').value;
+    counter = textEntered.length;
+    countRemaining = document.getElementById('lblCountLettersMensaje');
+    countRemaining.textContent = counter + "/250";
 }

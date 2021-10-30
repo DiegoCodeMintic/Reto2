@@ -1,5 +1,7 @@
 function show_div_reservacion() {
     document.getElementById("div_form_reservacion").style.visibility = "visible";
+    document.getElementById("div_funciones_reservacion").style.display = "none";
+    //
     limpiarCamposReservacion();
 }
 function hidden_div_reservacion() {
@@ -9,7 +11,8 @@ function hidden_div_reservacion() {
 
 function limpiarCamposReservacion() {
     document.getElementById('txtIdReservacion').value = "";
-   // document.getElementById('txtReservacionTexto').value = "";
+    document.getElementById('datepicker_inicio').value = "";
+    document.getElementById('datepicker_fin').value = "";
     document.getElementById('select_doctor_reserva').value = 0;
     document.getElementById('select_client_reserva').value = 0;
     currentReservacion = 0;
@@ -21,19 +24,20 @@ function getReservacion() {
     }).then(response => response.json())
         .then(data => {
             listaReservaciones = data;
-            let datatexto = '<table class="table table-striped"><thead><tr><th scope="col">Inicio</th><th scope="col">Finaliza</th><th scope="col">Doctor</th><th scope="col">Cliente</th><th scope="col"></th><th scope="col"></th></tr></thead><tbody>';
+            let datatexto = '<table class="table table-striped"><thead><tr><th scope="col">Inicio</th><th scope="col">Finaliza</th><th scope="col">Doctor</th><th scope="col">Cliente</th><th scope="col">Estado</th><th scope="col"></th><th scope="col"></th></tr></thead><tbody>';
             if (data.length > 0) {
                 data.forEach(reservacion => {
                     datatexto += "<tr>";
                     //datatexto += '<td >' + reservacion.idReservation + '</td>';
-                    datatexto += '<td style="font-size: 10px;">' + reservacion.startDate + '</td>';
-                    datatexto += '<td style="font-size: 10px;" >' + reservacion.devolutionDate + '</td>';
+                    datatexto += '<td style="font-size: 10px;" >' + convertFecha(reservacion.startDate) + '</td>';
+                    datatexto += '<td style="font-size: 10px;" >' + convertFecha(reservacion.devolutionDate) + '</td>';
                     datatexto += '<td >' + reservacion.doctor.name + '</td>';
                     datatexto += '<td >' + reservacion.client.name + '</td>';
                     
+                    datatexto += '<td style="font-size: 10px;" >' + getEstado(reservacion.status) + '</td>';
 
-                    datatexto += '<td><button class="btn btn-primary" onclick="editReservacion(' + reservacion.idMessage + ')"  >Editar</button></td>';
-                    datatexto += '<td><button class="btn btn-danger" onclick="deleteReservacion(' + reservacion.idMessage + ')" > X</button></td>';
+                    datatexto += '<td><button class="btn btn-primary" onclick="editReservacion(' + reservacion.idReservation + ')"  >Editar</button></td>';
+                    datatexto += '<td><button class="btn btn-danger" onclick="deleteReservacion(' + reservacion.idReservation + ')" > X</button></td>';
                     datatexto += '</tr>';
                 });
             }
@@ -43,8 +47,9 @@ function getReservacion() {
     getdoctors_1();
     getClient_1();
 }
-function convertFecha(){
-    
+function convertFecha(fecha) {
+    var splitdate = fecha.split('-');
+    return splitdate[0] + "-" + splitdate[1] + "-" + splitdate[2].substring(0, 2);
 }
 
 
@@ -84,53 +89,66 @@ function getClient_1() {
 }
 
 function deleteReservacion(id) {
-    // var opcion = confirm("Seguro que desea eliminar?");
-    // if (opcion == true) {
-    //     var data = { id: id };
-    //     var url = urlReservacions;
-    //     fetch(url, {
-    //         method: 'DELETE',
-    //         body: JSON.stringify(data),
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         }
-    //     });
-    //     getReservacions();
-    //     hidden_div_reservacion();
-    // }
-    alert("función no disponible aún en este reto 3 ");
+    var opcion = confirm("Seguro que desea eliminar?");
+    if (opcion == true) {
+        //var data = { id: id };
+        var url = urlReservation + "/" + id;
+        fetch(url, {
+            method: 'DELETE',
+            //body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(() => {
+            getReservacion();
+            hidden_div_reservacion();
+        });
+
+    }
+
 }
 function editReservacion(id) {
 
-    alert("función no disponible aún en este reto 3 ");
-    // listaReservacions.forEach(reservacion => {
-    //     if (reservacion.idMessage == id) {
-    //         currentReservacion = id;
-    //         document.getElementById("div_form_reservacion").style.visibility = "visible";
-    //         document.getElementById('txtIdReservacion').value = reservacion.idMessage;
-    //         document.getElementById('txtReservacionTexto').value = reservacion.messageText;
-    //         document.getElementById('select_doctor').value = reservacion.doctor.id;
-    //         document.getElementById('select_client').value = reservacion.client.idClient;
-    //     }
-    // });
+    //alert(id);
+    listaReservaciones.forEach(reservacion => {
+        if (reservacion.idReservation == id) {
+            currentReservacion = id;
+            document.getElementById("div_form_reservacion").style.visibility = "visible";
+            document.getElementById('txtIdReservacion').value = reservacion.idReservation;
+
+            document.getElementById('select_doctor_reserva').value = reservacion.doctor.id;
+            document.getElementById('select_client_reserva').value = reservacion.client.idClient;
+            document.getElementById("datepicker_inicio").value = convertFecha(reservacion.startDate);
+            document.getElementById("datepicker_fin").value = convertFecha(reservacion.devolutionDate);
+            document.getElementById("div_funciones_reservacion").style.display = "block";
+
+
+
+            document.getElementById('select_estado').value = reservacion.status;
+            if (reservacion.score == null) {
+                document.getElementById('select_calificar').value = 0;
+            } else {
+                document.getElementById('select_calificar').value = reservacion.score;
+            }
+        }
+    });
 }
 
 function guardarDatosReservacion() {
-    var url = urlReservation+"/save";
-    
+    var url = urlReservation + "/save";
+
     var seleccionDoctor = document.getElementById("select_doctor_reserva").value;
     var seleccionClient = document.getElementById("select_client_reserva").value;
     var fechaInicio = document.getElementById("datepicker_inicio").value;
     var fechaFin = document.getElementById("datepicker_fin").value;
 
-    if(seleccionClient!=0 &&seleccionDoctor!=0)
-    {
+    if (seleccionClient != 0 && seleccionDoctor != 0) {
         if (currentReservacion == 0) {
             //nuevo
             //{"startDate":"2020-12-20","devolutionDate":"2020-12-20","client":{"idClient":1},"doctor":{"id":1}}
-            console.log(fechaInicio);
-            console.log(fechaFin);
-            var data = { id: 0, startDate: fechaInicio,devolutionDate:fechaFin,client:{idClient:seleccionClient},doctor:{id:seleccionDoctor} };
+
+            //{"startDate":"2020-12-24","devolutionDate":"2020-12-25","client":{"idClient":1},"doctor":{"id":1},"status":"completed"}
+            var data = { startDate: fechaInicio, devolutionDate: fechaFin, client: { idClient: seleccionClient }, doctor: { id: seleccionDoctor }, status: "created" };
             fetch(url, {
                 method: 'POST',
                 body: JSON.stringify(data),
@@ -144,24 +162,42 @@ function guardarDatosReservacion() {
             });
         } else {
             //editar
-            alert("función no disponible aún en este reto 3 ");
-            // let id = currentReservacion;
-            // var data = { id: id, messagetext: reservacion };
-            // fetch(url, {
-            //     method: 'PUT',
-            //     body: JSON.stringify(data),
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     }
-            // }).then(() => {
-            //     alert('Reservacion Editado');
-            //     getReservacions();
-            //     hidden_div_reservacion();
-            // });
+            url = urlReservation + "/update";
+            var seleccionEstado = document.getElementById("select_estado").value;
+            var seleccionCalificacion = document.getElementById("select_calificar").value;
+            let id = currentReservacion;
+            var data = { idReservation: id, startDate: fechaInicio, devolutionDate: fechaFin, client: { idClient: seleccionClient }, doctor: { id: seleccionDoctor }, status: seleccionEstado, score: seleccionCalificacion };
+            fetch(url, {
+                method: 'PUT',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(() => {
+                alert('Reservacion Editado');
+                getReservacion();
+                hidden_div_reservacion();
+            });
         }
-    }else{
+    } else {
         alert('falta campo Cliente o campo Doctor  ');
     }
 
-    
+
+}
+
+function getEstado(estado) {
+    switch (estado) {
+        case 'created':
+            return 'Creado';
+        case 'programed':
+            return 'Programado';
+        case 'cancelled':
+            return 'Cancelado';
+        case 'completed':
+            return 'Realizado';
+        
+
+
+    }
 }
