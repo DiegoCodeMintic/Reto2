@@ -1,6 +1,8 @@
 function show_div_reservacion() {
     document.getElementById("div_form_reservacion").style.visibility = "visible";
     document.getElementById("div_funciones_reservacion").style.display = "none";
+    document.getElementById("select_doctor_reserva").disabled = false;
+    document.getElementById("select_client_reserva").disabled = false;
     //
     limpiarCamposReservacion();
 }
@@ -121,6 +123,9 @@ function editReservacion(id) {
             document.getElementById("datepicker_inicio").value = convertFecha(reservacion.startDate);
             document.getElementById("datepicker_fin").value = convertFecha(reservacion.devolutionDate);
             document.getElementById("div_funciones_reservacion").style.display = "block";
+
+            document.getElementById("select_doctor_reserva").disabled = true;
+            document.getElementById("select_client_reserva").disabled = true;
 
 
 
